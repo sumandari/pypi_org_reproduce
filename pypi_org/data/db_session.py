@@ -19,7 +19,8 @@ def global_init(db_file: str):
     conn_str = 'sqlite:///' + db_file.strip()
     print("Connecting to DB with {}".format(conn_str))
 
-    engine = sa.create_engine(conn_str, echo=True)
+    # echo True will show you the SQL queries in terminal
+    engine = sa.create_engine(conn_str, echo=False)
     __factory = orm.sessionmaker(bind=engine)
 
     # noinspection PyUnresolvedReferences
