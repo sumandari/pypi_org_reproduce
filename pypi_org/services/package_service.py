@@ -6,15 +6,13 @@ from pypi_org.data.package import Package
 from pypi_org.data.releases import Release
 
 
-def get_latest_packages(limit=10) -> List[Release]:
+def get_latest_releases(limit=10) -> List[Release]:
     session = db_session.create_session()
 
-    # avoid lazy query with joinedload and session.close(),
-    # the query wont be happened in template
-    releases = session.query(Release).\
-        options(sqlalchemy.orm.joinedload(Release.package)).\
-        order_by(Release.created_date.desc()).\
-        limit(limit).\
+    releases = session.query(Release). \
+        options(sqlalchemy.orm.joinedload(Release.package)). \
+        order_by(Release.created_date.desc()). \
+        limit(limit). \
         all()
 
     session.close()
@@ -42,7 +40,7 @@ def get_package_by_id(package_id: str) -> Optional[Package]:
 
     package = session.query(Package) \
         .options(sqlalchemy.orm.joinedload(Package.releases)) \
-        .filter(Package.id==package_id)\
+        .filter(Package.id == package_id) \
         .first()
 
     session.close()
